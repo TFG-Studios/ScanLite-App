@@ -30,16 +30,16 @@ fun SettingsScreen(vm: ScanViewModel) {
             verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(20.dp),
         ) {
             Group("Appearance") {
-                Segmented(listOf("System", "Light", "Dark"), vm.theme, vm::setTheme)
+                Segmented(listOf("System", "Light", "Dark"), vm.theme, vm::changeTheme)
             }
             Group(
                 "Scan quality",
                 "Fast saves battery, memory and storage on older phones. Sharp is best for small print.",
             ) {
-                Segmented(listOf("Fast", "Balanced", "Sharp"), vm.quality, vm::setQuality)
+                Segmented(listOf("Fast", "Balanced", "Sharp"), vm.quality, vm::changeQuality)
             }
             Group("PDF page size", "A4 centers each page on a standard sheet. Original keeps the scan's own proportions.") {
-                Segmented(listOf("A4", "Original"), vm.pdfSize, vm::setPdfSize)
+                Segmented(listOf("A4", "Original"), vm.pdfSize, vm::changePdfSize)
             }
             Group("About") {
                 Text(

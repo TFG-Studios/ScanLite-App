@@ -330,9 +330,9 @@ class ScanViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     // ---------------- settings ----------------
-    fun setTheme(v: Int) { theme = v; prefs.theme = v }
-    fun setQuality(v: Int) { quality = v; prefs.quality = v }
-    fun setPdfSize(v: Int) { pdfSize = v; prefs.pdfSize = v }
+    fun changeTheme(v: Int) { theme = v; prefs.theme = v }
+    fun changeQuality(v: Int) { quality = v; prefs.quality = v }
+    fun changePdfSize(v: Int) { pdfSize = v; prefs.pdfSize = v }
 
     private fun newId() = UUID.randomUUID().toString().take(12)
     private fun defaultName() = "Scan " + SimpleDateFormat("d MMM, HH:mm", Locale.getDefault()).format(Date())
