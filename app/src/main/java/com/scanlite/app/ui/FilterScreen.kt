@@ -2,6 +2,7 @@
 
 package com.scanlite.app.ui
 
+import androidx.compose.animation.core.animateFloat
 import android.graphics.Bitmap
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.RepeatMode
