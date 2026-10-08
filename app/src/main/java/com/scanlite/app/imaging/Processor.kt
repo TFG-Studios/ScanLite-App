@@ -36,6 +36,7 @@ data class EditParams(
     val contrast: Int = 0,     // -100..100
     val sharpness: Int = 25,   // 0..100
     val rotation: Int = 0,     // 0, 90, 180, 270
+    val strength: Int = 100,   // filter intensity 0..100
 )
 
 object Processor {
@@ -85,6 +86,7 @@ object Processor {
         s.getPixels(px, 0, w, 0, 0, w, h)
         if (s !== src) s.recycle()
 
+        val orig: IntArray? = if (p.filter != Filters.ORIGINAL && p.strength < 100) px.copyOf() else null
         val mono = p.filter == Filters.DOCUMENT || p.filter == Filters.GRAY
         if (mono) {
             for (i in px.indices) {
@@ -100,6 +102,17 @@ object Processor {
             Filters.WHITEBOARD -> normalize(px, w, h, 90, 1f, true)
         }
         applyTone(px, p)
+        if (orig != null) {
+            val t = p.strength / 100f
+            for (i in px.indices) {
+                val a = orig[i]
+                val b = px[i]
+                val r = (((a shr 16) and 255) + ((((b shr 16) and 255) - ((a shr 16) and 255)) * t)).toInt()
+                val g = (((a shr 8) and 255) + ((((b shr 8) and 255) - ((a shr 8) and 255)) * t)).toInt()
+                val bl = ((a and 255) + (((b and 255) - (a and 255)) * t)).toInt()
+                px[i] = (0xFF shl 24) or (r.coerceIn(0, 255) shl 16) or (g.coerceIn(0, 255) shl 8) or bl.coerceIn(0, 255)
+            }
+        }
         if (p.sharpness > 0) sharpen(px, w, h, p.sharpness / 100f * 0.8f)
         return Bitmap.createBitmap(px, w, h, Bitmap.Config.ARGB_8888)
     }

@@ -13,6 +13,7 @@ data class PageMeta(
     val contrast: Int,
     val sharpness: Int,
     val rotation: Int,
+    val strength: Int = 100,
 )
 
 data class DocMeta(
@@ -60,6 +61,7 @@ class Store(ctx: Context) {
                     .put("contrast", p.contrast)
                     .put("sharpness", p.sharpness)
                     .put("rotation", p.rotation)
+                    .put("strength", p.strength)
             )
         }
         return JSONObject().put("id", d.id).put("name", d.name).put("created", d.created).put("pages", pages)
@@ -78,7 +80,7 @@ class Store(ctx: Context) {
                         p.getString("id"),
                         (0 until 8).map { c.getDouble(it).toFloat() },
                         p.getInt("filter"), p.getInt("brightness"), p.getInt("contrast"),
-                        p.getInt("sharpness"), p.getInt("rotation"),
+                        p.getInt("sharpness"), p.getInt("rotation"), p.optInt("strength", 100),
                     )
                 }
             )
@@ -99,4 +101,10 @@ class Prefs(ctx: Context) {
     var pdfSize: Int // 0 A4, 1 original
         get() = sp.getInt("pdfSize", 0)
         set(v) = sp.edit().putInt("pdfSize", v).apply()
+    var motion: Int // 0 auto, 1 full, 2 reduced
+        get() = sp.getInt("motion", 0)
+        set(v) = sp.edit().putInt("motion", v).apply()
+    var haptics: Boolean
+        get() = sp.getBoolean("haptics", true)
+        set(v) = sp.edit().putBoolean("haptics", v).apply()
 }

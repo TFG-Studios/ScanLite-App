@@ -62,6 +62,10 @@ class ScanViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var pdfSize by mutableIntStateOf(prefs.pdfSize)
         private set
+    var motion by mutableIntStateOf(prefs.motion)
+        private set
+    var haptics by mutableStateOf(prefs.haptics)
+        private set
 
     // ---- page currently being scanned / edited ----
     var raw by mutableStateOf<Bitmap?>(null)
@@ -145,7 +149,7 @@ class ScanViewModel(app: Application) : AndroidViewModel(app) {
             sessionDocId = docId
             raw = bmp
             corners = pm.corners
-            params = EditParams(pm.filter, pm.brightness, pm.contrast, pm.sharpness, pm.rotation)
+            params = EditParams(pm.filter, pm.brightness, pm.contrast, pm.sharpness, pm.rotation, pm.strength)
             editing = pm
             push(Screen.Crop)
         }
@@ -191,7 +195,7 @@ class ScanViewModel(app: Application) : AndroidViewModel(app) {
                     warped.recycle()
                     out.recycle()
                 }
-                val meta = PageMeta(pageId, c, p.filter, p.brightness, p.contrast, p.sharpness, p.rotation)
+                val meta = PageMeta(pageId, c, p.filter, p.brightness, p.contrast, p.sharpness, p.rotation, p.strength)
                 val newDoc = doc.copy(
                     pages = if (old != null) doc.pages.map { if (it.id == pageId) meta else it }
                     else doc.pages + meta
@@ -333,6 +337,8 @@ class ScanViewModel(app: Application) : AndroidViewModel(app) {
     fun changeTheme(v: Int) { theme = v; prefs.theme = v }
     fun changeQuality(v: Int) { quality = v; prefs.quality = v }
     fun changePdfSize(v: Int) { pdfSize = v; prefs.pdfSize = v }
+    fun changeMotion(v: Int) { motion = v; prefs.motion = v }
+    fun changeHaptics(v: Boolean) { haptics = v; prefs.haptics = v }
 
     private fun newId() = UUID.randomUUID().toString().take(12)
     private fun defaultName() = "Scan " + SimpleDateFormat("d MMM, HH:mm", Locale.getDefault()).format(Date())
