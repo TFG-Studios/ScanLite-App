@@ -1,5 +1,6 @@
 # ScanLite
 (Keep in mind this is a VIBE-CODED OPEN-SOURCE PROJECT)
+
 **A fast, lightweight, privacy-focused document scanner for Android.**
 
 ScanLite turns your phone into a simple, powerful document scanner. Scan paper documents, automatically detect their boundaries, enhance their appearance, and export them as PDFs or images — all directly on your device.
